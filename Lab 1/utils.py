@@ -1,6 +1,6 @@
 import numpy as np
 import scipy.io.wavfile  as wavfile
-import winsound
+import os
 
 DTMF_FREQ = {'0': [1336, 941],
             '1': [1209, 697],
@@ -52,5 +52,5 @@ def save_sound(file_name, sampling_frequency, bits):
     wavfile.write(file_name, sampling_frequency, bits)
 
 def play_sound(file_name):
-    winsound.PlaySound(file_name, winsound.SND_FILENAME)
+    os.system("aplay " + file_name)
  
