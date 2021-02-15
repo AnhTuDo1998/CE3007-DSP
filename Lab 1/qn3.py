@@ -33,8 +33,9 @@ def q3_5():
         plt.show()
 
 def q3_4():
+    #rad per sample (digital angular velocity) = 2 pi every 36 samples => full circle for every 36 samples
     numSamples = 36
-    A=0.95
+    A=1.1 #Amplitude
     for w in [2*np.pi/36, 2*np.pi/18]:
         n = np.arange(0, numSamples, 1)
         y1 = np.multiply(np.power(A, n), np.exp(1j * w * n))
@@ -72,10 +73,14 @@ def q3_4():
         plt.show()
 
 def q3_3():
-     A=0.5; F=10; Phi = 0; Fs=60; sTime=0; eTime = 1 + 1/Fs
+    #Define our own A, B amplitude in this question
+    #y1:
+     A=0.5; F=10; Phi = 0; Fs=180; sTime=0; eTime = 1 + 1/Fs
      n, y1 = fnGenSampledSinusoid(A, F, Phi, Fs, sTime, eTime)
+    #y2:
      A = 1; F = 15
      n, y2 = fnGenSampledSinusoid(A, F, Phi, Fs, sTime, eTime)
+    #y3
      y = y1 + y2
      num_of_samples = np.arange(0,len(n),1)
      plt.stem(num_of_samples, y,'g', use_line_collection=True)
@@ -84,7 +89,7 @@ def q3_3():
 
 def q3_2():
     Fs = 16000
-    duration = 1
+    duration = 0.2
     _, y = fnGenSampledDTMF("0123456789*#", Fs, duration)
     y_16bit = fnNormalizeFloatTo16Bit(y)
     file_name = 't1_16bit_DTMF.wav'
@@ -109,9 +114,10 @@ def q3_1_c():
 
 def q3_1_b():
     print("At q3 1b!")
-    for F in [1000, 17000]:
+    #Plot for frequency = 1000 and for frequency = 17000
+    for F in [1000]:
         print(F)
-        A=0.5; Phi = 0; Fs=16000; sTime=0; eTime = 0.006 + 1/Fs
+        A=0.5; Phi = -(np.pi)/2 ; Fs=16000; sTime=0; eTime = 0.006 + 1/Fs
         _, axs = plt.subplots(3,1)
         [n,yfloat] = fnGenSampledSinusoid(A, F, Phi, Fs * 1000, sTime, eTime)
         axs[0].plot(n, yfloat)
@@ -128,16 +134,20 @@ def q3_1_b():
 
 def q3_1_a():
     print("At q3 1a!")
-    A=0.5; F=1000; Phi = 0; Fs=16000; sTime=0; eTime = 0.4
-    [_,yfloat] = fnGenSampledSinusoid(A, F, Phi, Fs, sTime, eTime)
-    y_16bit = fnNormalizeFloatTo16Bit(yfloat)
-    file_name_16_bit = "t1_16bit_" + str(F) + ".wav"
-    file_name_32_bit = "t1_float_" + str(F) + ".wav"
-    save_sound(file_name_16_bit, Fs, y_16bit)
-    save_sound(file_name_32_bit, Fs, yfloat)
-    print(F)
-    play_sound(file_name_16_bit)
-    for F in range(2000, 34000, 2000):
+    #Change variables here
+    A=0.5; F=1000; Phi = 0; Fs=16000; sTime=0; eTime = 1.0
+    #Generate a sampled sinuisoid
+    # [_,yfloat] = fnGenSampledSinusoid(A, F, Phi, Fs, sTime, eTime)
+    # y_16bit = fnNormalizeFloatTo16Bit(yfloat)
+    # file_name_16_bit = "t1_16bit_" + str(F) + ".wav"
+    # file_name_32_bit = "t1_float_" + str(F) + ".wav"
+    # save_sound(file_name_16_bit, Fs, y_16bit)
+    # save_sound(file_name_32_bit, Fs, yfloat)
+    # print(F)
+    # play_sound(file_name_16_bit)
+
+    #Loop around from 2000 to 32000 Hz, step to be 2000
+    for F in range(2000, 20000, 8000):
         [_,yfloat] = fnGenSampledSinusoid(A, F, Phi, Fs, sTime, eTime)
         y_16bit = fnNormalizeFloatTo16Bit(yfloat)
         file_name_16_bit = "t1_16bit_" + str(F) + ".wav"
@@ -149,12 +159,12 @@ def q3_1_a():
     print("##########################################################")
 
 def main():
-    q3_1_a()
-    q3_1_b()
+    #q3_1_a()
+    #q3_1_b()
     q3_2()
-    q3_3()
-    q3_4()
-    q3_5()
+    #q3_3()
+    #q3_4()
+    #q3_5()
 
 if __name__ == "__main__":
     main()
