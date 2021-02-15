@@ -1,6 +1,6 @@
 import numpy as np
 import scipy.io.wavfile  as wavfile
-import winsound
+import os
 
 # The following function generates a continuous time sinusoid
 # given the amplitude A, F (cycles/seconds), Fs=sampling rate, start and endtime
@@ -21,21 +21,30 @@ def fnNormalize16BitToFloat(y_16bit):
     return(np.array(yFloat, dtype='float'))
 
 def convolve(x, h):
+    #Our function follow the numpy convolution with no truncation
+    #First step is to get the final array with size as x.size + h.size -1
     x_length = np.size(x)
     h_length = np.size(h)
 
     y = np.zeros(x_length + h_length - 1)
 
+    #As we loop through the range of 1 signal at each sample index
+    #Create the other signal starting at that sample index
+    #Once created, sum all the amplitude of all the signals at that particular index
+    #Here we can do it directly in the same for loop sinze we initialized the result array to 0
     for i in np.arange(x_length):
         for j in np.arange(h_length):
             y[i + j] = y[i + j] + x[i] * h[j]
+        #print("Loop (on x_signal): ", i)
+
+    #print("Done")
     return y
 
 def save_sound(file_name, sampling_frequency, bits):
     wavfile.write(file_name, sampling_frequency, bits)
 
 def play_sound(file_name):
-    winsound.PlaySound(file_name, winsound.SND_FILENAME)
+    os.system("aplay " + file_name)
 
 def read_sound(file_name):
     return wavfile.read(file_name)
